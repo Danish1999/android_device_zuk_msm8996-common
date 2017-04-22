@@ -81,31 +81,7 @@ static int process_cam_preview_hint(void *metadata)
     }
 
     if (cam_preview_metadata.state == 1) {
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            /* sched and cpufreq params
-             * above_hispeed_delay for LVT - 40ms
-             * go hispeed load for LVT - 95
-             * hispeed freq for LVT - 556 MHz
-             * target load for LVT - 90
-             * above hispeed delay for sLVT - 40ms
-             * go hispeed load for sLVT - 95
-             * hispeed freq for sLVT - 556 MHz
-             * target load for sLVT - 90
-             * bus DCVS set to V2 config:
-             *  low power ceil mpbs - 2500
-             *  low power io percent - 50
-             */
-            int resource_values[] = {0x41400000, 0x4, 0x41410000, 0x5F, 0x41414000, 0x22C,
-                0x41420000, 0x5A, 0x41400100, 0x4, 0x41410100, 0x5F, 0x41414100, 0x22C,
-                0x41420100, 0x5A, 0x41810000, 0x9C4, 0x41814000, 0x32};
-
-            perform_hint_action(cam_preview_metadata.hint_id,
-                    resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
-            ALOGI("Cam Preview hint start");
-            return HINT_HANDLED;
-        } else if ((strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(SCHEDUTIL_GOVERNOR))) {
+            // EAS resources
             /*
              * lower bus BW to save power
              *   0x41810000: low power ceil mpbs = 2500
@@ -120,10 +96,6 @@ static int process_cam_preview_hint(void *metadata)
             return HINT_HANDLED;
         }
     } else if (cam_preview_metadata.state == 0) {
-        if (((((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) ||
-            ((strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(SCHEDUTIL_GOVERNOR))))) {
             undo_hint_action(cam_preview_metadata.hint_id);
             ALOGI("Cam Preview hint stop");
             return HINT_HANDLED;
@@ -135,6 +107,7 @@ static int process_cam_preview_hint(void *metadata)
 
 static int process_boost(int boost_handle, int duration)
 {
+    // EAS resources
     char governor[80];
     int eas_launch_resources[] = {  MAX_FREQ_BIG_CORE_0, 0xFFF, 
                                     MAX_FREQ_LITTLE_CORE_0, 0xFFF,
@@ -143,31 +116,10 @@ static int process_boost(int boost_handle, int duration)
                                     CPUBW_HWMON_MIN_FREQ, 140,   
                                     ALL_CPUS_PWR_CLPS_DIS_V3, 0x1};
 
-    int hmp_launch_resources[] = {  SCHED_BOOST_ON_V3, 0x1,   
-                                    MAX_FREQ_BIG_CORE_0, 0xFFF,
-                                    MAX_FREQ_LITTLE_CORE_0, 0xFFF, 
-                                    MIN_FREQ_BIG_CORE_0, 0xFFF,
-                                    MIN_FREQ_LITTLE_CORE_0, 0xFFF, 
-                                    CPUBW_HWMON_MIN_FREQ, 140,
-                                    ALL_CPUS_PWR_CLPS_DIS_V3, 0x1};
     int* launch_resources;
     size_t launch_resources_size;
-
-    if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-        ALOGE("Can't obtain scaling governor.");
-        return -1;
-    }
-    if (strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) {
-        launch_resources = eas_launch_resources;
-        launch_resources_size = sizeof(eas_launch_resources) / sizeof(eas_launch_resources[0]);
-    } else if (strncmp(governor, INTERACTIVE_GOVERNOR,
-                       strlen(INTERACTIVE_GOVERNOR)) == 0) { /*HMP boost*/
-        launch_resources = hmp_launch_resources;
-        launch_resources_size = sizeof(hmp_launch_resources) / sizeof(hmp_launch_resources[0]);
-    } else {
-        ALOGE("Unsupported governor.");
-        return -1;
-    }
+    launch_resources = eas_launch_resources;
+    launch_resources_size = sizeof(eas_launch_resources) / sizeof(eas_launch_resources[0]);
     boost_handle = interaction_with_handle(
         boost_handle, duration, launch_resources_size, launch_resources);
     return boost_handle;
@@ -188,37 +140,8 @@ static int process_video_encode_hint(void *metadata)
         int duration = 2000; // boosts 2s for starting encoding
         boost_handle = process_boost(boost_handle, duration);
         ALOGD("LAUNCH ENCODER-ON: %d MS", duration);
-        if ((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) {
-            /* 1. cpufreq params
-             *    -above_hispeed_delay for LVT - 40ms
-             *    -go hispeed load for LVT - 95
-             *    -hispeed freq for LVT - 556 MHz
-             *    -target load for LVT - 90
-             *    -above hispeed delay for sLVT - 40ms
-             *    -go hispeed load for sLVT - 95
-             *    -hispeed freq for sLVT - 806 MHz
-             *    -target load for sLVT - 90
-             * 2. bus DCVS set to V2 config:
-             *    -low power ceil mpbs - 2500
-             *    -low power io percent - 50
-             * 3. hysteresis optimization
-             *    -bus dcvs hysteresis tuning
-             *    -sample_ms of 10 ms
-             *    -disable ignore_hispeed_notif
-             *    -sLVT hispeed freq to 806MHz
-             */
-            int resource_values[] = {
-                0x41810000, 0x9C4, 0x41814000, 0x32, 0x4180C000, 0x0, 0x41820000, 0xA,
-                0x41438100, 0x1,  0x41438000, 0x1 };
 
-            perform_hint_action(DEFAULT_VIDEO_ENCODE_HINT_ID,
-                    resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
-            ALOGD("Video Encode hint start");
-            return HINT_HANDLED;
-        } else if ((strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(SCHEDUTIL_GOVERNOR))) {
-
+            // EAS resources
             /* 1. bus DCVS set to V2 config:
              *    0x41810000: low power ceil mpbs - 2500
              *    0x41814000: low power io percent - 50
@@ -233,17 +156,11 @@ static int process_video_encode_hint(void *metadata)
                     resource_values, sizeof(resource_values)/sizeof(resource_values[0]));
             ALOGD("Video Encode hint start");
             return HINT_HANDLED;
-        }
     } else {
         // boost handle is intentionally not released, release_request(boost_handle);
-        if (((strncmp(governor, INTERACTIVE_GOVERNOR, strlen(INTERACTIVE_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(INTERACTIVE_GOVERNOR))) ||
-            ((strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) &&
-                (strlen(governor) == strlen(SCHEDUTIL_GOVERNOR)))) {
             undo_hint_action(DEFAULT_VIDEO_ENCODE_HINT_ID);
             ALOGD("Video Encode hint stop");
             return HINT_HANDLED;
-        }
     }
     return HINT_NONE;
 }

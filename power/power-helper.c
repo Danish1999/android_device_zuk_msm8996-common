@@ -311,13 +311,6 @@ void power_hint(power_hint_t hint, void *data)
         break;
         case POWER_HINT_INTERACTION:
         {
-            char governor[80];
-
-            if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-                ALOGE("Can't obtain scaling governor.");
-                return;
-            }
-
             if (sustained_performance_mode || vr_mode) {
                 return;
             }
@@ -350,8 +343,6 @@ void power_hint(power_hint_t hint, void *data)
             s_previous_boost_timespec = cur_boost_timespec;
             s_previous_duration = duration;
 
-            // Scheduler is EAS.
-	    if (true || strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) {
                 // Scrolls/flings
                 if (isFling) {
                     get_int(FLING_BOOST_TOPAPP_PATH, &fling_boost_topapp, 10);
@@ -373,13 +364,6 @@ void power_hint(power_hint_t hint, void *data)
                                                         STOR_CLK_SCALE_DIS, touch_boost_topapp, 
                                                         CPUBW_HWMON_MIN_FREQ, 0x33};
                     interaction(duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
-                }
-            } else { // Scheduler is HMP.
-                int hmp_interaction_resources[] = { CPUBW_HWMON_MIN_FREQ, 0x33, 
-                                                    MIN_FREQ_BIG_CORE_0, 1000, 
-                                                    MIN_FREQ_LITTLE_CORE_0, 1000, 
-                                                    SCHED_BOOST_ON_V3, 0x1};
-                interaction(duration, sizeof(hmp_interaction_resources)/sizeof(hmp_interaction_resources[0]), hmp_interaction_resources);
             }
         }
         break;

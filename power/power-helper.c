@@ -349,7 +349,7 @@ void power_hint(power_hint_t hint, void *data)
                 if (data) {
                     int eas_interaction_resources[] = { MIN_FREQ_BIG_CORE_0, fling_min_freq_big, 
                                                         MIN_FREQ_LITTLE_CORE_0, fling_min_freq_little, 
-                                                        STOR_CLK_SCALE_DIS, fling_boost_topapp,
+                                                        0x42C0C000, fling_boost_topapp,
                                                         CPUBW_HWMON_MIN_FREQ, 0x33};
                     interaction(boost_duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
                 }
@@ -357,7 +357,7 @@ void power_hint(power_hint_t hint, void *data)
                 else {
                     int eas_interaction_resources[] = { MIN_FREQ_BIG_CORE_0, touch_min_freq_big, 
                                                         MIN_FREQ_LITTLE_CORE_0, touch_min_freq_little, 
-                                                        STOR_CLK_SCALE_DIS, touch_boost_topapp, 
+                                                        0x42C0C000, touch_boost_topapp, 
                                                         CPUBW_HWMON_MIN_FREQ, 0x33};
                     interaction(boost_duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
                 }            

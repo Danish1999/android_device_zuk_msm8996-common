@@ -65,3 +65,4 @@ enum CPU_GOV_CHECK {
 #define UNUSED(x) UNUSED_ ## x __attribute__((__unused__))
 
 void get_int(const char* file_path, int* value, int fallback_value);
+void get_hex(const char* file_path, int* value, int fallback_value);

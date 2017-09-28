@@ -200,8 +200,8 @@ void power_hint(power_hint_t hint, void *data)
                         release_request(launch_handle);
                         launch_mode = 0;
                     }
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq
@@ -213,10 +213,10 @@ void power_hint(power_hint_t hint, void *data)
                         sizeof(resources) / sizeof(resources[0]), resources);
                 } else if (vr_mode == 1) { // Sustained + VR mode.
                     release_request(vr_mode_handle);
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
-                    // 0x40800000: cpu0 min freq
-                    // 0x40800100: cpu2 min freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
+                    // 0x40800000: cpu2 min freq
+                    // 0x40800100: cpu0 min freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq
@@ -232,10 +232,10 @@ void power_hint(power_hint_t hint, void *data)
             } else if (sustained_performance_mode == 1) {
                 release_request(sustained_mode_handle);
                 if (vr_mode == 1) { // Switch back to VR Mode.
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
-                    // 0x40800000: cpu0 min freq
-                    // 0x40800100: cpu2 min freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
+                    // 0x40800000: cpu2 min freq
+                    // 0x40800100: cpu0 min freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq
@@ -266,10 +266,10 @@ void power_hint(power_hint_t hint, void *data)
                         release_request(launch_handle);
                         launch_mode = 0;
                     }
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
-                    // 0x40800000: cpu0 min freq
-                    // 0x40800100: cpu2 min freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
+                    // 0x40800000: cpu2 min freq
+                    // 0x40800100: cpu0 min freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq
@@ -282,10 +282,10 @@ void power_hint(power_hint_t hint, void *data)
                         sizeof(resources) / sizeof(resources[0]), resources);
                 } else if (sustained_performance_mode == 1) { // Sustained + VR mode.
                     release_request(sustained_mode_handle);
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
-                    // 0x40800000: cpu0 min freq
-                    // 0x40800100: cpu2 min freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
+                    // 0x40800000: cpu2 min freq
+                    // 0x40800100: cpu0 min freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq
@@ -302,10 +302,10 @@ void power_hint(power_hint_t hint, void *data)
             } else if (vr_mode == 1) {
                 release_request(vr_mode_handle);
                 if (sustained_performance_mode == 1) { // Switch back to sustained Mode.
-                    // 0x40804000: cpu0 max freq
-                    // 0x40804100: cpu2 max freq
-                    // 0x40800000: cpu0 min freq
-                    // 0x40800100: cpu2 min freq
+                    // 0x40804000: cpu2 max freq
+                    // 0x40804100: cpu0 max freq
+                    // 0x40800000: cpu2 min freq
+                    // 0x40800100: cpu0 min freq
                     // 0x42C20000: gpu max freq
                     // 0x42C24000: gpu min freq
                     // 0x42C28000: gpu bus min freq

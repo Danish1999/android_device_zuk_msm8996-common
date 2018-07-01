@@ -328,15 +328,11 @@ void power_hint(power_hint_t hint, void *data)
             }
 
             // Check if interaction_boost is enabled
-            if (!enable_interaction_boost)
-                break;
-            bool isFling = false;
-
-            if (data) { // Boost duration for scrolls/flings
+            if (enable_interaction_boost) {
+                if (data) { // Boost duration for scrolls/flings
                 int input_duration = *((int*)data) + fling_min_boost_duration;
                 boost_duration = (input_duration > fling_max_boost_duration) ? fling_max_boost_duration : input_duration;
-				isFling = true;
-            } 
+                } 
 
             struct timespec cur_boost_timespec;
             clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
@@ -350,7 +346,7 @@ void power_hint(power_hint_t hint, void *data)
             s_previous_duration = boost_duration;
 
                 // Scrolls/flings
-                if (isFling) {
+                if (data) {
                     int eas_interaction_resources[] = { MIN_FREQ_BIG_CORE_0, fling_min_freq_big, 
                                                         MIN_FREQ_LITTLE_CORE_0, fling_min_freq_little, 
                                                         STOR_CLK_SCALE_DIS, fling_boost_topapp,
@@ -364,6 +360,7 @@ void power_hint(power_hint_t hint, void *data)
                                                         STOR_CLK_SCALE_DIS, touch_boost_topapp, 
                                                         CPUBW_HWMON_MIN_FREQ, 0x33};
                     interaction(boost_duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
+                }            
             }
 
             // Update tunable values again

@@ -301,7 +301,7 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.1-service-qti
+    android.hardware.power@1.1-service.gemini
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
@@ -395,3 +395,5 @@ PRODUCT_COPY_FILES += \
 #Zuk Extras
 PRODUCT_PACKAGES += \
     ZukPref	
+PRODUCT_PROPERTY_OVERRIDES += ro.hardware.power=gemini
+

@@ -119,9 +119,6 @@ on enable-low-power
     # Re-enable thermal hotplug
     write /sys/module/msm_thermal/core_control/enabled 1
 
-    # Input boost config
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1324800 2:1324800"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
     # Set big.LITTLE scheduler parameters
     write /proc/sys/kernel/sched_boost 0
@@ -163,6 +160,17 @@ on enable-low-power
     # Enable all LPMs (this will enable C4, D4, D3, E4 and M3 LPMs)
     write /sys/module/lpm_levels/parameters/sleep_disabled "N"
 
+    # Sound Control
+    write /sys/kernel/sound_control/mic_gain 8
+    write /sys/kernel/sound_control/earpiece_gain 12
+    write /sys/module/snd_soc_wcd9330/parameters/high_perf_mode 1
+    write /sys/kernel/sound_control/speaker_gain 10
+    write /sys/kernel/sound_control/headphone_gain "8 8"
+
+    # CPU Boost
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1036000 2:1036000"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+
     # Set perfd properties
     setprop sys.post_boot.parsed 1
 
@@ -170,7 +178,7 @@ on property:sys.boot_completed=1
     trigger enable-low-power
 
     # Set I/O squeduler
-    setprop sys.io.scheduler "bfq"
+    setprop sys.io.scheduler "cfq"
 
     # update cpusets now that boot is complete and we want better load balancing
     write /dev/cpuset/top-app/cpus 0-3

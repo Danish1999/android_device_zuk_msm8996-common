@@ -28,6 +28,7 @@
  */
 
 #include <cutils/properties.h>
+#include "power-helper.h"
 
 extern int launch_handle;
 extern int launch_mode;

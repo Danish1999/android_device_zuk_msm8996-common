@@ -94,13 +94,6 @@ on init
     chown system system /dev/cpuset/application/background/tasks
     chmod 0660 /dev/cpuset/application/background/tasks
 
-     # set default schedTune value for foreground/top-app (only affects EAS)
-    write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 10
-    write /dev/stune/top-app/schedtune.prefer_idle 1
-    write /dev/stune/rt/schedtune.boost 30
-    write /dev/stune/rt/schedtune.prefer_idle 1
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -220,7 +213,8 @@ on post-fs-data
     setprop vold.post_fs_data_done 1
 
     # Create PERFD deamon related dirs
-    setprop ro.min_freq_0 384000
+    setprop ro.min_freq_0 300000
+    setprop ro.min_freq_4 300000
     mkdir /data/misc/perfd 0755 root system
     chmod 2755 /data/misc/perfd
     mkdir /data/system/perfd 0770 root system
@@ -349,12 +343,13 @@ on boot
     chown system graphics /sys/class/graphics/fb0/modes
     chown system graphics /sys/class/graphics/fb0/mode
     chown system graphics /sys/class/graphics/fb0/msm_cmd_autorefresh_en
+    chown system graphics /sys/devices/virtual/graphics/fb0/dynamic_fps
     chmod 0664 /sys/class/graphics/fb0/idle_time
     chmod 0664 /sys/class/graphics/fb0/dyn_pu
     chmod 0664 /sys/class/graphics/fb0/modes
     chmod 0664 /sys/class/graphics/fb0/mode
     chmod 0664 /sys/class/graphics/fb0/msm_cmd_autorefresh_en
-	
+    chmod 0664 /sys/devices/virtual/graphics/fb0/dynamic_fps	
     chown system system /sys/devices/platform/kcal_ctrl.0/kcal
     chown system system /sys/devices/platform/kcal_ctrl.0/kcal_enable
     chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont

@@ -176,6 +176,8 @@ TARGET_USES_MKE2FS := true
 # Power
 TARGET_HAS_NO_WLAN_STATS := true
 TARGET_TAP_TO_WAKE_NODE := "/sys/devices/virtual/touch/tp_dev/gesture_on"
+TARGET_USES_AOSP := true
+
 
 # QCOM
 BOARD_USES_QCOM_HARDWARE := true

@@ -357,6 +357,8 @@ on boot
     chown system graphics /sys/class/graphics/fb0/modes
     chown system graphics /sys/class/graphics/fb0/mode
     chown system graphics /sys/class/graphics/fb0/msm_cmd_autorefresh_en
+    chown system graphics /sys/devices/virtual/graphics/fb0/dynamic_fps
+    chmod 0664 /sys/devices/virtual/graphics/fb0/dynamic_fps
     chmod 0664 /sys/class/graphics/fb0/idle_time
     chmod 0664 /sys/class/graphics/fb0/dyn_pu
     chmod 0664 /sys/class/graphics/fb0/modes

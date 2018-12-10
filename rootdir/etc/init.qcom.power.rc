@@ -40,6 +40,14 @@ on init
     #write /dev/stune/top-app/schedtune.boost 10
     #write /dev/stune/top-app/schedtune.prefer_idle 1
 
+    # Create Power HAL tunables
+    mkdir /dev/voxpopuli 0555 system system
+
+    # set default schedTune value for foreground/top-app (only affects EAS)
+    write /dev/stune/foreground/schedtune.prefer_idle 1
+    write /dev/stune/top-app/schedtune.boost 10
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+
 on boot
     # Update foreground and background cpusets
     write /dev/cpuset/foreground/cpus 0-3
@@ -58,6 +66,45 @@ on boot
 
     # Enable sched boost
     write /proc/sys/kernel/sched_boost 1
+
+     # Set Power HAL tunables
+    write /dev/voxpopuli/enable_interaction_boost   1
+    write /dev/voxpopuli/fling_min_boost_duration   250
+    write /dev/voxpopuli/fling_max_boost_duration   2500
+    write /dev/voxpopuli/fling_boost_topapp         5
+    write /dev/voxpopuli/fling_min_freq_big         806
+    write /dev/voxpopuli/fling_min_freq_little      960
+    write /dev/voxpopuli/touch_boost_duration       150
+    write /dev/voxpopuli/touch_boost_topapp         5
+    write /dev/voxpopuli/touch_min_freq_big         806
+    write /dev/voxpopuli/touch_min_freq_little      960
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
+     
+    # set default schedTune value for foreground/top-app (only affects EAS)
+    write /dev/stune/foreground/schedtune.prefer_idle 1
+    write /dev/stune/top-app/schedtune.boost 0
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /dev/stune/rt/schedtune.boost 0
+    write /dev/stune/rt/schedtune.prefer_idle 1
 
 on charger
     wait /dev/block/platform/soc/${ro.boot.bootdevice}

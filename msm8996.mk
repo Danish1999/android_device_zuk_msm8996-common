@@ -114,6 +114,7 @@ PRODUCT_PACKAGES += \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libaacwrapper \
     libvolumelistener \
     tinymix
 

@@ -36,9 +36,9 @@ on init
     chmod 0444 /sys/module/msm_performance/parameters/cpu_max_freq
 
     # Set default schedTune value for foreground/top-app (only affects EAS)
-    write /dev/stune/foreground/schedtune.prefer_idle 1
-    write /dev/stune/top-app/schedtune.boost 10
-    write /dev/stune/top-app/schedtune.prefer_idle 1
+    #write /dev/stune/foreground/schedtune.prefer_idle 1
+    #write /dev/stune/top-app/schedtune.boost 10
+    #write /dev/stune/top-app/schedtune.prefer_idle 1
 
 on boot
     # Update foreground and background cpusets
@@ -135,8 +135,8 @@ on enable-low-power
     write /sys/module/msm_thermal/core_control/enabled 1
 
     # Input boost config
-    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1324800 2:1324800"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    #write /sys/module/cpu_boost/parameters/input_boost_freq "0:1324800 2:1324800"
+    #write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
     # Set big.LITTLE scheduler parameters
     write /proc/sys/kernel/sched_boost 0

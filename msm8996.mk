@@ -410,3 +410,18 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_BOOT_JARS += \
     WfdCommon
+
+#QTI performance
+PRODUCT_BOOT_JARS += \
+    QPerformance \
+    UxPerformance
+
+#QTI Performance
+PRODUCT_GENERIC_PROPERTIES += \
+    vendor.enable_prefetch=1 \
+    vendor.iop.enable_uxe=1 \
+    vendor.iop.enable_prefetch_ofr=1 \
+    vendor.perf.iop_v3.enable=1 \
+    ro.vendor.at_library=libqti-at.so \
+    persist.vendor.qti.games.gt.prof=1
+

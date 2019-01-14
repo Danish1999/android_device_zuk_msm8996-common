@@ -4,8 +4,8 @@
 /* Copyright (c) 2017 Qualcomm Technologies, Inc.
  * All Rights Reserved.
  * Confidential and Proprietary - Qualcomm Technologies, Inc.
- */
 -->
+
 
 <!--Ids are used in identifying the boosts, increment ids linearly,
     do not modify Ids, or add in between-->
@@ -16,86 +16,97 @@
     <PerfBoost>
 
     <!--app lauch boost-->
-        <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
-        <!-- CPUBOOST_MAX_FREQ LITTLE Core resource opcode, value-->
-        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
-        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
-        <!-- STORAGE CLK SCALING resource opcode, value-->
 
         <!-- Type="1", main launch boost of 2sec -->
+
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- CPUBOOST_MIN_FREQ BIG resource opcode, value-->
         <Config
-            Id="0x00001081" Type="1" Enable="true" Timeout="2000" Target="msm8996"
-            Resources="0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000, 0xFFF,
-                         0x42C10000, 0x1" />
+            Id="0x00001081" Type="1" Enable="true" Timeout="3000"  Target="msm8996"
+            Resources="0x40800100, 0x639, 0x40800000, 0x866" />
+
+
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- SCHED_SPILL_NR_RUN resource opcode, value-->
+        <!-- SCHED_RESTRICT_CLUSTER_SPILL resource opcode, value-->
+        <Config
+            Id="0x00001081" Type="1" Enable="true" Timeout="2000"
+            Resources="0x40800100, 0x639, 0x40C2C000, 0x1, 0x40C34000, 0x0" />
+
+    <!--app lauch boost (disabling packing)-->
+        <!-- DISABLE_POWER_COLLAPSE resource opcode, value-->
+
+        <!-- Type="2", launch boost for disable packing 1.5sec -->
+        <Config
+            Id="0x00001081" Type="2" Enable="true" Timeout="1500"
+            Resources="0x40400000, 0x1" />
 
     <!--resume boost-->
         <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
         <!-- CPUBOOST_MAX_FREQ LITTLE Core resource opcode, value-->
         <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- CPUBW_MIN_FREQ resource opcode, value-->
         <!-- POWER COLLAPSE resource opcode, value-->
         <!-- STORAGE CLK SCALING resource opcode, value-->
+        <!-- LLCCBW resource opcode, value-->
+        <!-- L3 resource opcode, value-->
+        <!-- GPU DISABLE resource opcode, value-->
 
         <Config
             Id="0x00001082" Type="1" Enable="true" Timeout="400" Target="msm8996"
-            Resources="0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000, 0x8C6,
-                       0x40800100, 0xFFF, 0x40400000, 0x1, 0x42C10000, 0x1" />
+            Resources="0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000, 0x720,
+                       0x40800100, 0xFFF, 0x41800000, 140, 0x40400000, 0x1, 0x42C10000, 0x1,
+                       0x43000000, 0xFF, 0x43400000, 0xFFFF, 0x4281C000, 0x1" />
 
-    <!--app lauch boost (disabling packing)-->
-
-        <!-- Type="2", launch boost for disable packing 1.5sec -->
+    <!-- config_enablePerfBoostForAnimation-->
+        <!-- Type="1", Animation boost of 0.6sec -->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
+        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
         <Config
-            Id="0x00001081" Type="2" Enable="false" Timeout="1500" Target="msm8986"
-            Resources="" />
+            Id="0x00001083" Enable="true" Timeout="600"  Target="msm8996"
+            Resources="0x40800100, 0x3C0, 0x40800000, 0x326" />
 
-    <!-- config_enableLaunchBoostv2-->
-      <!-- Type="3", FA launch boost of 15sec -->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
         <Config
-            Id="0x00001081" Type="3" Enable="true" Timeout="15000" Target="msm8996"
-            Resources="" />
+            Id="0x00001083" Enable="true" Timeout="600"
+            Resources="0x40800100, 0x3C0" />
 
     <!--Vertical Scroll boost-->
-        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
-        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
-        <!-- SCHEDBOOST resource opcode, value-->
-
         <!-- Type="1", Vertical Scroll boost -->
-        <Config
-            Id="0x00001080" Type="1" Enable="true" Target="msm8996"
-            Resources="0x40800000, 1000, 0x40800100, 1000, 0x40C00000, 0x2" />
-
-    <!--Prefling Scroll boost-->
-        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
-        <!-- TIMEOUT 80ms -->
-        <!-- Type="4", Prefling boost -->
+        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value -->
+        <!-- SCHEDBOOST resource opcode, value-->
         <Config
-            Id="0x00001080" Type="4" Enable="true" Timeout="80" Target="msm8996"
-            Resources="0x40800000, 1000, 0x40800100, 1000" />
+            Id="0x00001080" Type="1" Enable="true"  Target="msm8996"
+            Resources="0x40800100, 0x40C, 0x40800000, 0x40C,0x40C00000, 0x1 " />
 
-    <!--webview Scroll boost-->
-        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
-        <!-- Type="5", webview Scroll boost -->
         <Config
-            Id="0x00001080" Type="5" Enable="true" Timeout="2500" Target="msm8996"
-            Resources="0x40800000, 1000, 0x40800100, 1000" />
+            Id="0x00001080" Type="1" Enable="true"
+            Resources="0x40800100, 0x40C" />
 
     <!--Horizontal Scroll boost-->
-
         <!-- Type="2", Horizontal Scroll boost -->
-        <Config
-            Id="0x00001080" Type="2" Enable="true" Target="msm8996"
-            Resources="" />
-
-    <!--Drag boost-->
-        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
-
-        <!-- Type="1", Drag boost -->
+        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value -->
+        <!-- SCHEDBOOST resource opcode, value-->
         <Config
-            Id="0x00001087" Type="1" Enable="true" Timeout="0" Target="msm8996"
-            Resources="0x40800000, 1000, 0x40800100, 1000" />
+            Id="0x00001080" Type="2" Enable="true"  Target="msm8996"
+            Resources="0x40800100, 0x40C, 0x40800000, 0x40C" />
+
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
+        <Config
+            Id="0x00001080" Type="2" Enable="true"
+            Resources="0x40800100, 0x40C" />
+    <!--Pre-Fling boost-->
+        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value -->
+        <!-- CPUBOOST_MIN_FREQ BIG CORE resource opcode, value -->
+        <!-- SCHEDBOOST resource opcode, value-->
+        <!-- Type="4", Pre-Fling boost -->
+        <Config
+            Id="0x00001080" Type="4" Enable="true" Timeout="80" Target="msm8996"
+            Resources="0x40800100, 0x40C, 0x40800000, 0x40C,0x40C00000, 0x1 "  />
 
     <!--PackageInstall boost-->
         <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
@@ -110,33 +121,31 @@
                        0x40800100,0xFFF,0x43000000,0xFF,0x43400000,0xFF,0x40400000,1" />
 
     <!--Rotation latency boost-->
+        <!-- SCHEDBOOST resource opcode, value-->
         <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
         <!-- CPUBOOST_MAX_FREQ LITTLE Core resource opcode, value-->
         <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
         <!-- Type="", Rotation latency boost -->
-
         <Config
             Id="0x00001089" Enable="true" Timeout="1500" Target="msm8996"
-            Resources="0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000,0xFFF,
+            Resources="0x40C00000, 0x1, 0x40804000, 0xFFF, 0x40804100, 0xFFF, 0x40800000, 0xFFF,
                        0x40800100,0xFFF" />
+
+        <Config
+            Id="0x00001089" Enable="true" Timeout="1500"
+            Resources="0x40C00000, 0x1, 0x40804100, 0xFFF, 0x40800100, 0xFFF" />
 
     <!--Rotation animation boost-->
         <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
         <!-- GPU MIN_FREQUENCY resource opcode,value-->
         <!-- Type="", Rotation animation boost -->
-
         <Config
             Id="0x00001090" Enable="true" Timeout="1000" Target="msm8996"
-            Resources="0x40800100, 1000, 0x4280C000, 270" />
+            Resources="0x40800100, 0x40C, 0x4280C000, 324" />
 
-    <!--XiaoMi bluetooth boost-->
-        <!-- CPUBOOST_MAX_FREQ BIG Core resource opcode, value-->
-        <!-- CPUBOOST_MAX_FREQ LITTLE Core resource opcode, value-->
-        <!-- CPUBOOST_MIN_FREQ BIG Core resource opcode, value-->
-        <!-- CPUBOOST_MIN_FREQ LITTLE Core resource opcode, value-->
         <Config
-            Id="0x00011C0" Type="1" Enable="true" Timeout="3000" Target="msm8996"
-            Resources="0x40804000, 0xFFF, 0x40804100, 0xFFF" />
+            Id="0x00001090" Enable="true" Timeout="1000"
+            Resources="0x40800100, 0x40C, 0x4280C000, 324" />
     </PerfBoost>
 </BoostConfigs>

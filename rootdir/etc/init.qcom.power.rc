@@ -192,9 +192,8 @@ on enable-low-power
 
     # Sound Control
     write /sys/kernel/sound_control/mic_gain 8
-    write /sys/kernel/sound_control/earpiece_gain 12
-    write /sys/module/snd_soc_wcd9330/parameters/high_perf_mode 1
-    write /sys/kernel/sound_control/speaker_gain 8
+    write /sys/kernel/sound_control/earpiece_gain 8
+    write /sys/kernel/sound_control/speaker_gain 5
     write /sys/kernel/sound_control/headphone_gain "8 8"
 
     # Set perfd/iop properties
